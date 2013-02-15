@@ -1,0 +1,46 @@
+apply {
+	plugin 'groovy'
+}
+
+apply {
+	plugin 'idea'
+}
+
+version = '0.1'
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+def encoding = 'UTF-8'
+
+repositories {
+    mavenCentral()
+    maven {
+        url 'http://oss.sonatype.org/content/repositories/snapshots/'
+    }
+}
+
+dependencies {
+
+    compile 'org.codehaus.groovy:groovy-all:2.1.0'
+    testCompile 'org.spockframework:spock-core:1.0-groovy-2.0-SNAPSHOT'
+
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = 1.4
+}
+
+tasks.withType(Compile) {
+    options.encoding = encoding
+}
+
+task quickStart << {
+    sourceSets*.allSource*.srcDirs.flatten().each { it.mkdirs() }
+}
+
+task ASL << {
+	def licenseFile = new File('LICENSE.txt')
+	def url = new URL('http://www.apache.org/licenses/LICENSE-2.0.txt')
+	licenseFile.text = url.text
+}
