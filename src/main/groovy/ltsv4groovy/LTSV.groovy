@@ -21,13 +21,11 @@ class LTSV {
         String formatLine(Map<String, String> line) {
             if (!line) return ""
             line.collect {
-                "${it.key}${LTSV.SEPARATOR}${it.value}"
-            }.join LTSV.TAB
+                "${it.key}${SEPARATOR}${it.value}"
+            }.join TAB
         }
 
         void formatLines(List<Map<String, String>> lines = [], Writer writer) {
-            if (!writer) return
-
             new BufferedWriter(writer).withPrintWriter { pw ->
                 for (line in lines) {
                     pw.println formatLine(line)
@@ -36,10 +34,16 @@ class LTSV {
         }
 
         void formatLines(List<Map<String, String>> lines, OutputStream outputStream, String charset = DEFAULT_CHARSET) {
-            if (!outputStream) return
             outputStream.withWriter(charset) { writer ->
                 formatLines(lines, writer)
             }
+        }
+
+         void formatLines(List<Map<String, String>> lines, File file, String charset = DEFAULT_CHARSET) {
+             if (!file.exists()) {
+                 file.createNewFile()
+             }
+             formatLines(lines,new FileOutputStream(file,true),charset)
         }
 
     }

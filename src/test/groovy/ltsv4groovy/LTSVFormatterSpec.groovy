@@ -1,5 +1,7 @@
-package ltsv4groovy;
+package ltsv4groovy
 
+import org.junit.Rule
+import org.junit.rules.TemporaryFolder;
 import spock.lang.Specification
 import spock.lang.Unroll
 
@@ -50,6 +52,30 @@ bar:baz
 
         then:
         new String(stream.toByteArray()) == expected
+
+        where:
+        lines                         | expected
+        null                          | ''
+        []                            | ''
+        [[hoge: 'foo', bar: 'baz']]   | 'hoge:foo\tbar:baz\n'
+        [[hoge: 'foo'], [bar: 'baz']] | """hoge:foo
+bar:baz
+"""
+
+    }
+
+    @Rule
+    public TemporaryFolder temporaryFolder = new TemporaryFolder()
+
+    def "should format with file #lines to #expected"() {
+        given:
+        def file = temporaryFolder.newFile()
+
+        when:
+        LTSV.formatter.formatLines(lines, file)
+
+        then:
+        file.text == expected
 
         where:
         lines                         | expected
