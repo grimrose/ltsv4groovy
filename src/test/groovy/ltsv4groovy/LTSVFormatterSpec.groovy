@@ -67,6 +67,7 @@ bar:baz
     @Rule
     public TemporaryFolder temporaryFolder = new TemporaryFolder()
 
+    @Unroll
     def "should format with file #lines to #expected"() {
         given:
         def file = temporaryFolder.newFile()
@@ -76,6 +77,28 @@ bar:baz
 
         then:
         file.text == expected
+
+        where:
+        lines                         | expected
+        null                          | ''
+        []                            | ''
+        [[hoge: 'foo', bar: 'baz']]   | 'hoge:foo\tbar:baz\n'
+        [[hoge: 'foo'], [bar: 'baz']] | """hoge:foo
+bar:baz
+"""
+
+    }
+
+    @Unroll
+    def "should format with file path #lines to #expected"() {
+        given:
+        def path = temporaryFolder.newFile().absolutePath
+
+        when:
+        LTSV.formatter.formatLines(lines, path)
+
+        then:
+        new File(path).text == expected
 
         where:
         lines                         | expected

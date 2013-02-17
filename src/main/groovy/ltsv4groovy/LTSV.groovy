@@ -39,11 +39,15 @@ class LTSV {
             }
         }
 
-         void formatLines(List<Map<String, String>> lines, File file, String charset = DEFAULT_CHARSET) {
-             if (!file.exists()) {
-                 file.createNewFile()
-             }
-             formatLines(lines,new FileOutputStream(file,true),charset)
+        void formatLines(List<Map<String, String>> lines, File file, String charset = DEFAULT_CHARSET) {
+            if (!file.exists()) {
+                file.createNewFile()
+            }
+            formatLines(lines, new FileOutputStream(file, true), charset)
+        }
+
+        void formatLines(List<Map<String, String>> lines, String filePath, String charset = DEFAULT_CHARSET) {
+            formatLines(lines, new File(filePath), charset)
         }
 
     }
