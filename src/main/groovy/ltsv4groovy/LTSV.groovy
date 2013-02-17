@@ -25,6 +25,14 @@ class LTSV {
             }.join LTSV.TAB
         }
 
+        void formatLines(List<Map<String, String>> lines = [], Writer writer) {
+            if (!writer) return
+
+            for (line in lines) {
+                writer.println formatLine(line)
+            }
+        }
+
     }
 
 }

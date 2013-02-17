@@ -18,4 +18,26 @@ class LTSVFormatterSpec extends Specification {
         [hoge: 'foo', bar: 'baz'] | 'hoge:foo\tbar:baz'
     }
 
+    @Unroll
+    def "should format #lines to #expected"() {
+
+        given:
+        StringWriter writer = new StringWriter()
+
+        when:
+        LTSV.formatter.formatLines(lines, writer)
+
+        then:
+        writer.toString() == expected
+
+        where:
+        lines                         | expected
+        null                          | ''
+        []                            | ''
+        [[hoge: 'foo', bar: 'baz']]   | 'hoge:foo\tbar:baz\n'
+        [[hoge: 'foo'], [bar: 'baz']] | """hoge:foo
+bar:baz
+"""
+    }
+
 }
