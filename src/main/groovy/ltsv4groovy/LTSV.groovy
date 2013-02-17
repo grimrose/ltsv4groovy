@@ -28,8 +28,17 @@ class LTSV {
         void formatLines(List<Map<String, String>> lines = [], Writer writer) {
             if (!writer) return
 
-            for (line in lines) {
-                writer.println formatLine(line)
+            new BufferedWriter(writer).withPrintWriter { pw ->
+                for (line in lines) {
+                    pw.println formatLine(line)
+                }
+            }
+        }
+
+        void formatLines(List<Map<String, String>> lines, OutputStream outputStream, String charset = DEFAULT_CHARSET) {
+            if (!outputStream) return
+            outputStream.withWriter(charset) { writer ->
+                formatLines(lines, writer)
             }
         }
 

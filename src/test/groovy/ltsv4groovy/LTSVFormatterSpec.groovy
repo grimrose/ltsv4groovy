@@ -40,4 +40,26 @@ bar:baz
 """
     }
 
+    @Unroll
+    def "should format with stream #lines to #expected"() {
+        given:
+        OutputStream stream = new ByteArrayOutputStream()
+
+        when:
+        LTSV.formatter.formatLines(lines, stream)
+
+        then:
+        new String(stream.toByteArray()) == expected
+
+        where:
+        lines                         | expected
+        null                          | ''
+        []                            | ''
+        [[hoge: 'foo', bar: 'baz']]   | 'hoge:foo\tbar:baz\n'
+        [[hoge: 'foo'], [bar: 'baz']] | """hoge:foo
+bar:baz
+"""
+
+    }
+
 }
