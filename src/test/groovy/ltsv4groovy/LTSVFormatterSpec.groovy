@@ -8,7 +8,7 @@ import spock.lang.Unroll
 class LTSVFormatterSpec extends Specification {
 
     @Unroll
-    def "should format #line to #expected"() {
+    def "should #line is formatted into #expected"() {
 
         expect:
         LTSV.formatter.formatLine(line) == expected
@@ -21,7 +21,7 @@ class LTSVFormatterSpec extends Specification {
     }
 
     @Unroll
-    def "should format #lines to #expected"() {
+    def "should #lines is formatted into #expected"() {
 
         given:
         StringWriter writer = new StringWriter()
@@ -43,7 +43,7 @@ bar:baz
     }
 
     @Unroll
-    def "should format with stream #lines to #expected"() {
+    def "should #lines is formatted into #expected using stream"() {
         given:
         OutputStream stream = new ByteArrayOutputStream()
 
@@ -68,7 +68,7 @@ bar:baz
     public TemporaryFolder temporaryFolder = new TemporaryFolder()
 
     @Unroll
-    def "should format with file #lines to #expected"() {
+    def "should #lines is formatted into #expected using file"() {
         given:
         def file = temporaryFolder.newFile()
 
@@ -90,7 +90,7 @@ bar:baz
     }
 
     @Unroll
-    def "should format with file path #lines to #expected"() {
+    def "should #lines is formatted into #expected using file path"() {
         given:
         def path = temporaryFolder.newFile().absolutePath
 
