@@ -74,6 +74,12 @@ class LTSV {
             new BufferedReader(reader).readLines().collectNested { parseLine(it) }
         }
 
+        List<Map<String, String>> parseLines(InputStream inputStream, String charset = DEFAULT_CHARSET) {
+            inputStream.withReader(charset) { reader ->
+                parseLines(reader)
+            }
+        }
+
     }
 
 }

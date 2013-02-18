@@ -56,4 +56,28 @@ class LTSVParserSpec extends Specification {
 fuga:fumo\tpiyo:homu
 """                | [[hoge: 'foo', bar: 'baz'], [fuga: 'fumo', piyo: 'homu']]
     }
+
+    @Unroll
+    def "should #line parse into #expected with stream"() {
+        expect:
+        LTSV.parser.parseLines(new ByteArrayInputStream(line.bytes)) == expected
+
+        where:
+        line                  | expected
+        ''                    | []
+        '\t'                  | [[:]]
+        ':'                   | [[:]]
+        'hoge:foo'            | [[hoge: 'foo']]
+        'hoge:foo\n'          | [[hoge: 'foo']]
+        'hoge:foo\t'          | [[hoge: 'foo']]
+        'hoge:foo\t\n'        | [[hoge: 'foo']]
+        'hoge:foo\tbar\n'     | [[hoge: 'foo']]
+        'hoge:foo\tbar:\n'    | [[hoge: 'foo', bar: '']]
+        'hoge:foo\tbar:baz\n' | [[hoge: 'foo', bar: 'baz']]
+        """hoge:foo\tbar:baz
+fuga:fumo\tpiyo:homu
+"""                | [[hoge: 'foo', bar: 'baz'], [fuga: 'fumo', piyo: 'homu']]
+
+    }
+
 }
