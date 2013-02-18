@@ -80,4 +80,19 @@ fuga:fumo\tpiyo:homu
 
     }
 
+    static File root = new File(".", 'src/test/resources')
+
+    @Unroll
+    def "should #file parse into #expected"() {
+        given:
+
+        expect:
+        LTSV.parser.parseLines(file) == expected
+
+        where:
+        file                        | charset | expected
+        new File(root, 'test.ltsv') | _       | [[a: '1', b: '2', c: '3'], [a: '4', b: '5', c: '6'], [a: '7', b: '8', c: '9']]
+        new File(root, 'hoge.ltsv') | 'UTF-8' | [[hoge: 'foo', bar: 'baz'], [perl: '5.17.8', ruby: '2.0', python: '2.6'], [sushi: '寿司', tennpura: '天ぷら', ramen: 'ラーメン', gyoza: '餃子']]
+    }
+
 }

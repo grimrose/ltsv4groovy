@@ -80,6 +80,10 @@ class LTSV {
             }
         }
 
+        List<Map<String, String>> parseLines(File file, String charset = DEFAULT_CHARSET) {
+            parseLines(new FileInputStream(file), charset)
+        }
+
     }
 
 }
