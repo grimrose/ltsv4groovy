@@ -25,9 +25,9 @@ class LTSV {
             }.join TAB
         }
 
-        void formatLines(List<Map<String, String>> lines = [], Writer writer) {
+        void formatLines(List<Map<String, String>> lines, Writer writer) {
             new BufferedWriter(writer).withPrintWriter { pw ->
-                for (line in lines) {
+                (lines ?: []).each { line ->
                     pw.println formatLine(line)
                 }
             }
@@ -68,6 +68,10 @@ class LTSV {
 
                 [("$key" as String): value]
             }
+        }
+
+        List<Map<String, String>> parseLines(Reader reader) {
+            new BufferedReader(reader).readLines().collectNested { parseLine(it) }
         }
 
     }
