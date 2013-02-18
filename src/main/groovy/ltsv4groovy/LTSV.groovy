@@ -41,13 +41,33 @@ class LTSV {
 
         void formatLines(List<Map<String, String>> lines, File file, String charset = DEFAULT_CHARSET) {
             if (!file.exists()) {
-                file.createNewFile()
+                assert file.createNewFile()
             }
             formatLines(lines, new FileOutputStream(file, true), charset)
         }
 
         void formatLines(List<Map<String, String>> lines, String filePath, String charset = DEFAULT_CHARSET) {
             formatLines(lines, new File(filePath), charset)
+        }
+
+    }
+
+    static LTSVParser getParser() {
+        new LTSVParser()
+    }
+
+    static class LTSVParser {
+
+        Map<String, String> parseLine(String line) {
+            (line ?: '').tokenize(TAB).collectEntries { String string ->
+                int first = (string ?: '').indexOf(SEPARATOR)
+                if (first <= 0) return [:]
+
+                String key = string.substring(0, first)
+                String value = string.substring(first).replaceFirst(SEPARATOR, '').replaceAll(/$CR|$LF/, '')
+
+                [("$key" as String): value]
+            }
         }
 
     }
