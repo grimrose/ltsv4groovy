@@ -1,9 +1,9 @@
 apply {
-	plugin 'groovy'
+    plugin 'groovy'
 }
 
 apply {
-	plugin 'idea'
+    plugin 'idea'
 }
 
 version = '0.1'
@@ -39,8 +39,14 @@ task quickStart << {
     sourceSets*.allSource*.srcDirs.flatten().each { it.mkdirs() }
 }
 
-task ASL << {
-	def licenseFile = new File('LICENSE.txt')
-	def url = new URL('http://www.apache.org/licenses/LICENSE-2.0.txt')
-	licenseFile.text = url.text
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath 'nl.javadude.gradle.plugins:license-gradle-plugin:0.5.0'
+    }
 }
+
+apply plugin: 'license'
